@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>On the River</title>
+  </head>
+  <body>
+    <div id="page1">
+      <div class="intro">
+        <p>The sun is low,</p>
+      </div>
+      <p>The waters flow,</p>
+    </div>
+    <div id="page2">
+      <div class="intro">
+        <p>My boat is dancing to and fro.</p>
+      </div>
+      <p>The eve is still,</p>
+    </div>
+    <div id="page3">
+      <div class="intro">
+        <p>Yet from the hill</p>
+      </div>
+      <p>The killdeer echoes loud and shrill.</p>
+    </div>
+  </body>
+</html>
+<script src='../assert.js'></script>
+<script>
+  function walk(node, callback) {
+    callback(node);
+    node.childNodes.forEach(function (childNode) {
+      walk(childNode, callback);
+    });
+  }
+  
+  function getElementsByTagName(tagName) {
+    var elements = [];
+
+    tagName = tagName.toUpperCase();
+    walk(document.body, function(node) {
+      if (node.tagName === tagName) elements.push(node);
+    });
+
+    p(elements, "All the <p> tags");
+    return elements;
+  }
+
+  getElementsByTagName('p').forEach(function(node) {
+    node.classList.add("article-text");
+  });
+
+</script>

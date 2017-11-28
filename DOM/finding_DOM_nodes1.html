@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>On the River</title>
+  </head>
+  <body>
+    <h1>On The River</h1>
+    <p>The sun is low</p>
+    <p>The waters flow</p>
+  </body>
+</html>
+<script src='../assert.js'></script>
+<script>
+  function walk(node, callback) {
+    callback(node);
+
+    node.childNodes.forEach(function (childNode) {
+      walk(childNode, callback);
+    });
+  }
+  
+  function allParagraphNodes() {
+    var pList = [];
+    
+    walk(document.body, function(node) {
+      if (node.nodeName === 'P') pList.push(node);
+    })
+
+    return pList;
+  }
+
+  p(allParagraphNodes(), 'All the paragraph elements');
+</script>
