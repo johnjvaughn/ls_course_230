@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>title</title>
+    <meta charset="UTF-8">
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var addButton = document.getElementById('add');
+        var subtractButton = document.getElementById('subtract');
+        var output = document.getElementById('output');
+        var count = 0;
+
+        addButton.addEventListener('click', function(event) {
+          count++;
+          output.textContent = String(count);
+        });
+        subtractButton.addEventListener('click', function(event) {
+          count--;
+          output.textContent = String(count);
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <p>
+      <span id="output">0</span>
+      <button id="add">Add One</button>
+      <button id="subtract">Subtract One</button>
+    </p>
+  </body>
+</html>
