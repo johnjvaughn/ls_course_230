@@ -1,0 +1,84 @@
+
+body {
+  background-color: #5bccb3;
+  font: bold 18px Helvetica, Arial, sans-serif;
+  color: #15997b;
+}
+
+section {
+  box-sizing: border-box;
+  width: 500px;
+  margin: 0 auto;
+  border: 25px solid #5bccb3;
+  padding: 40px 20px;
+  background-color: #ffffff;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #cd173e;
+}
+
+fieldset {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+input[type="text"] {
+  display: block;
+  box-sizing: border-box;
+  margin: 10px 0;
+  height: 50px;
+  padding: 2px;
+  font: 500 24px Georgia, Palatino, serif;
+}
+
+#item {
+  width: 100%;
+}
+
+#quantity {
+  width: 80px;
+}
+
+input[type="submit"] {
+  display: block;
+  box-sizing: border-box;
+  margin-top: 15px;
+  height: 58px;
+  width: 100%;
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(80, 80, 80 .8);
+  background: linear-gradient(to bottom, #c8173d 0%, #780c23 100%);
+  box-shadow: 0 0 1px 1px #780e24;
+  border: 1px solid #910f2b;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+ul {
+  font-size: 16px;
+}
+
+li {
+  border-bottom: 1px solid #ececec;
+  padding: 10px;
+}
+
+li:last-child {
+  border: none;
+}
