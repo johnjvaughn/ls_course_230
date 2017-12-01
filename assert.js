@@ -33,9 +33,3 @@ function partial(primary, arg1) {
     return primary(arg1, arg2);
   };
 }
-
-Object.prototype.begetObject = function() {
-  function F() {}
-  F.prototype = this;
-  return new F();
-};
