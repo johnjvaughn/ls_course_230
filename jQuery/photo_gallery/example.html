@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Fluid Layout Gallery</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="gallery.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="gallery2.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>My Photo Gallery</h1>
+      <figure>
+        <img src="images/adirondackPine.jpg" alt="Adirondack Pine" />
+        <figcaption>Adirondack Pine Soap</figcaption>
+      </figure>
+      <figure>
+        <img src="images/bayRumLime.jpg" alt="Bay Rum & Lime" />
+        <figcaption>Bay Rum &amp; Lime Soap</figcaption>
+      </figure>
+      <figure>
+        <img src="images/facialMask_HoneyAloe.jpg" alt="Honey Aloe Facial Mask" />
+        <figcaption>Honey Aloe Facial Mask</figcaption>
+      </figure>
+      <figure>
+        <img src="images/facialMask_LavaClayHoney.jpg" alt="Lava Clay Honey Facial Mask" />
+        <figcaption>Lava Clay Honey Facial Mask</figcaption>
+      </figure>
+      <ul>
+        <li class='active'><a href="#"><img src="images/adirondackPine.jpg" alt="Adirondack Pine Soap" title="Photo 1" /></a></li>
+        <li><a href="#"><img src="images/bayRumLime.jpg" alt="Bay Rum & Lime Soap" title="Photo 2" /></a></li>
+        <li><a href="#"><img src="images/facialMask_HoneyAloe.jpg" alt="Honey Aloe Facial Mask" title="Photo 3" /></a></li>
+        <li><a href="#"><img src="images/facialMask_LavaClayHoney.jpg" alt="Lava Clay Honey Facial Mask" title="Photo 4" /></a></li>
+      </ul>
+      <div class='controls'>
+        <button id='prev'>&#10229;</button>
+        <button id='next'>&#10230;</button>
+      </div>
+    </main>
+  </body>
+</html>
