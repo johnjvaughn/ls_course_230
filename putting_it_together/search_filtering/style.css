@@ -1,0 +1,47 @@
+
+body {
+  font: normal 13px Helvetica, Arial, sans-serif;
+  background-color: #eee196;
+}
+
+#page {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+main {
+  float: right;
+  box-sizing: border-box;
+  width: 80%;
+  height: 100%;
+  padding: 20px;
+}
+h1 {
+  font-size: 28px;
+}
+main li {
+  box-sizing: border-box;
+  height: 50px;
+  padding-left: 25px;
+  padding-top: 15px;
+  vertical-align: middle;
+}
+main li:hover {
+  background-color: #99f099;
+}
+main li + li {
+  border-top: 1px solid #eeeeee;
+}
+
+aside {
+  float: left;
+  box-sizing: border-box;
+  width: 20%;
+  height: 100%;
+  padding: 20px;
+}
+aside ul {
+  padding-top: 50px;
+}
