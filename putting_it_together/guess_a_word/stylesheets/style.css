@@ -4,10 +4,18 @@ body {
   font: normal 20px serif;
 }
 
+.win {
+  background-color: #0000f0;
+}
+
+.lose {
+  background-color: #f00000;
+}
+
 main {
   box-sizing: border-box;
   width: 840px;
-  height: 800px;
+  height: 840px;
   margin: 5px auto;
   padding: 40px 40px 438px 40px;
   background-color: #ffffff;
@@ -15,11 +23,8 @@ main {
   background-repeat: no-repeat, no-repeat;
   background-origin: content-box, border-box;
   background-position: 215px 0px, center 20px;
-  /*background-position: 215px -322px, center 20px;*/
-  /*background-position: 215px -644px, center 20px;*/
   background-clip: content-box, padding-box;
 }
-
 
 #game {
   position: absolute;
@@ -46,6 +51,11 @@ span {
   text-align: center;
   vertical-align: bottom;
   font: normal 28px serif;
+}
+
+.revealed span {
+  color: green;
+  border-color: green;
 }
 
 .replay {

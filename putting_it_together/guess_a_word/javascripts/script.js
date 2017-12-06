@@ -12,113 +12,132 @@ $(function() {
     };
   }();
 
-  function initializeWord(len) {
-    $('#word > span, #guesses > span').remove();
-    var $wordElmt = $('#word');
-    for (var i = 1; i <= len; i += 1) {
-      $wordElmt.append("<span></span>");
-    }
-  }
-
-  function showLetter(word, letter) {
-    var $letter_spans = $('#word > span');
-
-    word.split('').forEach(function(ltr, index) {
-      if (ltr === letter) {
-        $letter_spans.eq(index).text(letter);
-      }
-    });
-  }
-
-  function showApples(wrongGuesses) {
-    var vertical = -322 * wrongGuesses;
-
-    $('main').css({
-      backgroundPosition: "215px " + String(vertical) + "px, center 20px"
-    });
-  }
-
   function Game() {
     if (!(this instanceof Game)) {
       return new Game();
     }
 
-    this.answer = randomWord();
-    console.log(this.answer);
-    this.lettersGuessed = [];
-    this.wrongGuesses = 0;
-    this.wrongGuessLimit = 6;
-    this.loseMessage = "Sorry! You're out of guesses";
-    this.winMessage = "You win!";
-    this.gameResult = '';
-    initializeWord(this.answer.length);
-  }
+    this.CONST = {
+      wrongGuessLimit: 6,
+      lose_message: "Sorry! You're out of guesses",
+      win_message: "You win!",
+      out_message: "Sorry, I've run out of words!",
+    };
+    Object.freeze(this.CONST);
+    this.$jq = {
+      word: $('#word'),
+      guesses: $('#guesses'),
+      message: $('.message'),
+      replay: $('.replay'),
+      body: $('body'),
+      main: $('main'),
+    };
+    this.letters_guessed = [];
+    this.wrong_guesses = 0;
+    this.game_result = undefined;
+    this.reset();
+  };
   
+  Game.prototype.initializeWord = function() {
+    this.$jq.word.children('span').remove();
+    this.$jq.guesses.children('span').remove();
+    var spans = (new Array(this.answer.length + 1)).join("<span></span>");
+
+    this.$jq.word.append(spans);
+  };
+
+  Game.prototype.showTypedLetter = function(letter) {
+    var $letter_spans = $('#word > span');
+
+    this.answer.split('').forEach(function(ltr, index) {
+      if (ltr === letter || letter === 'all') {
+        $letter_spans.eq(index).text(ltr);
+      }
+    });
+  };
+
+  Game.prototype.revealAnswer = function(letter) {
+    this.showTypedLetter('all');
+    this.$jq.word.addClass('revealed');
+  }
+
+  Game.prototype.showApples = function() {
+    var vertical = -322 * this.wrong_guesses;
+
+    this.$jq.main.css({
+      backgroundPosition: "215px " + String(vertical) + "px, center 20px"
+    });
+  };
+
   Game.prototype.updateGuesses = function(letter) {
-    this.lettersGuessed.push(letter);
-    $('#guesses').append('<span>' + letter + '</span>');
-  }
+    this.letters_guessed.push(letter);
+    this.$jq.guesses.append('<span>' + letter + '</span>');
+  };
 
-  Game.prototype.displayResult = function(result) {
-    if (!result) return;
-    $('.message').text(result === 'win' ? this.winMessage : this.loseMessage);
-    $('.replay').css('display', 'block');
-  }
-
-  Game.prototype.replay = function() {
-    $('.message').empty();
-    $('.replay').css('display', 'none');
+  Game.prototype.reset = function() {
+    this.$jq.message.empty();
+    this.$jq.replay.css('display', 'none');
+    this.$jq.word.removeClass('revealed');
+    this.$jq.body.removeClass('win lose');
     this.answer = randomWord();
     if (this.answer === undefined) {
-      $('.message').text(this.outMessage);
-      this.gameResult = 'out';
+      this.$jq.message.text(this.CONST.out_message);
+      this.game_result = 'out';
       return;
     }
-    initializeWord(this.answer.length);
-    this.lettersGuessed = [];
-    this.wrongGuesses = 0;
-    this.gameResult = '';
-    showApples(this.wrongGuesses);
-  }
+    this.initializeWord();
+    this.letters_guessed = [];
+    this.wrong_guesses = 0;
+    this.game_result = undefined;
+    this.showApples();
+  };
 
-  Game.prototype.checkIfOver = function() {
-    var result = '';
-    
+  Game.prototype.checkForResult = function() {
     if (this.answer.split('').every(function(ltr) {
-      return this.lettersGuessed.includes(ltr);
+      return this.letters_guessed.includes(ltr);
     }, this)) {
-      result = 'win';
-    } else if (this.wrongGuesses >= this.wrongGuessLimit) {
-      this.displayResult('lose');
-      result = 'lose';
+      this.game_result = 'win';
+    } else if (this.wrong_guesses >= this.CONST.wrongGuessLimit) {
+      this.game_result = 'lose';
     }
-    this.displayResult(result);
-    return result;
-  }
+    return this.game_result;
+  };
+
+  Game.prototype.displayResult = function() {
+    if (!this.game_result) return;
+    if (this.game_result === 'win') {
+      this.$jq.message.text(this.CONST.win_message);
+      this.$jq.body.addClass('win');
+    } else {
+      this.$jq.message.text(this.CONST.lose_message);
+      this.$jq.body.addClass('lose');
+      this.revealAnswer();
+    }
+    this.$jq.replay.css('display', 'block');
+  };
 
   Game.prototype.processGuess = function(letter) {
-    if (this.gameResult) return;
-    if (this.lettersGuessed.includes(letter)) return;
+    if (this.game_result) return;
+    if (this.letters_guessed.includes(letter)) return;
     this.updateGuesses(letter);
     if (this.answer.includes(letter)) {
-      showLetter(this.answer, letter);
+      this.showTypedLetter(letter);
     } else {
-      this.wrongGuesses += 1;
-      showApples(this.wrongGuesses);
+      this.wrong_guesses += 1;
+      this.showApples();
     }
-    this.gameResult = this.checkIfOver();
-  }
+    if (this.checkForResult()) this.displayResult();
+  };
 
   var game = new Game();
 
   $(document).keydown(function(e) {
-    if ((game.gameResult !== 'out') && e.key.match(/^[a-z]$/i)) {
+    if ((game.game_result !== 'out') && e.key.match(/^[a-z]$/i)) {
       game.processGuess(e.key.toUpperCase());
     }
-    console.log(game);
   });
 
-  $('.replay').click(function() {
-    game.replay();
+  game.$jq.replay.click(function() {
+    game.reset();
   });
 });
