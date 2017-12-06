@@ -10,6 +10,11 @@ var inventory;
       stock_number: '',
       quantity: 1,
     }),
+    
+    setJQelements: function() {
+      this.$table = $('table');
+      this.$add_btn = $('#add_item');
+    },
     setDate: function() {
       var today = new Date();
       $('#order_date').text(today.toUTCString());
@@ -59,10 +64,6 @@ var inventory;
       if (!id) return;
       $thisRow.remove();
       this.delete(id);
-    },
-    setJQelements: function() {
-      this.$table = $('table');
-      this.$add_btn = $('#add_item');
     },
     bindEvents: function() {
       this.$add_btn.on('click', this.addItem.bind(this));
