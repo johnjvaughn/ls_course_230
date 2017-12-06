@@ -17,35 +17,32 @@ $(function() {
     return (!!key.match(/^[a-z]$/i));
   }
 
-  function Game() {
-    if (!(this instanceof Game)) {
-      return new Game();
-    }
-
-    this.CONST = {
+  var Game = {
+    CONST: {
       wrongGuessLimit: 6,
       lose_message: "Sorry! You're out of guesses",
       win_message: "You win!",
       out_message: "Sorry, I've run out of words!",
-    };
-    Object.freeze(this.CONST);
-    this.$jq = {
+    },
+    $jq: {
       word: $('#word'),
       guesses: $('#guesses'),
       message: $('.message'),
       replay: $('.replay'),
       body: $('body'),
       main: $('main'),
-    };
-    Object.freeze(this.$jq);
-    this.letters_guessed = [];
-    this.wrong_guesses = 0;
-    this.game_result = undefined;
-    this.reset();
-    this.bindKeyPress();
-  };
-  
-  Game.prototype = {
+    },
+    
+    init: function() {
+      Object.freeze(this.CONST);
+      Object.freeze(this.$jq);
+      this.letters_guessed = [];
+      this.wrong_guesses = 0;
+      this.game_result = undefined;
+      this.reset();
+      this.bindKeyPress();
+      return this;
+    },
     initBoard: function() {
       this.$jq.word.children('span').remove();
       this.$jq.guesses.children('span').remove();
@@ -139,5 +136,5 @@ $(function() {
     },
   };
 
-  var game = new Game();
+  var game = Object.create(Game).init();
 });
