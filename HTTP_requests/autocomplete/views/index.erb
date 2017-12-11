@@ -5,7 +5,14 @@
     <title>Autocomplete!</title>
     <link rel="stylesheet" href="/stylesheets/normalize.css">
     <link rel="stylesheet" href="stylesheets/autocomplete.css">
-    <script src="/javascripts/autocomplete.js"></script>
+    <script src="/javascripts/debounce.js"></script>
+    <script src="/javascripts/autocomplete2.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var input = document.querySelector('input');
+        var autocomplete = new Autocomplete(input, '/countries?matching=');
+      });
+    </script>
   </head>
   <body>
     <div class="app">
