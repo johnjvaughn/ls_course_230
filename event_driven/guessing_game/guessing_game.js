@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     answer = Math.floor(Math.random() * 100) + 1;
     messageElmt.textContent = "Guess a number from 1 to 100";
     guessElmt.value = '';
+    guessCounter = 0;
     buttonElmt.disabled = false;
   }
   

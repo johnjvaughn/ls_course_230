@@ -28,7 +28,7 @@ p(notice, '4. set onclick attribute on notice to hide it');
 //5.
 var mult = document.getElementById('multiplication');
 var nums = mult.innerText.match(/\d+/g);
-mult.innerText = String(+nums[0] * +nums[1]);
+mult.innerText += " = " + String(+nums[0] * +nums[1]);
 p(mult, '5. changed text of multiplication element to result');
 
 //6.

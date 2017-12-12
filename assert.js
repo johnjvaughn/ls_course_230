@@ -1,4 +1,4 @@
-const eql = (a, b) => {
+function eql(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 };
 

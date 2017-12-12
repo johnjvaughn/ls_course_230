@@ -35,10 +35,10 @@
       //   }
       // }
 
-      var paragraphs = document.querySelectorAll('.intro p');
-      for (j = 0; j < paragraphs.length; j += 1) {
-        paragraphs[j].classList.add("article-text");
-      }
+      var paragraphs = [].slice.call(document.querySelectorAll('.intro p'));
+      paragraphs.forEach(function(paragraph) {
+        paragraph.classList.add("article-text");
+      });
     </script>
   </body>
 </html>

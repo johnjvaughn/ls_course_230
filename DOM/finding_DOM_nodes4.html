@@ -26,9 +26,9 @@
 </html>
 <script src='../assert.js'></script>
 <script>
-  var paragraphs = document.getElementsByTagName('p');
+  var paragraphs = [].slice.call(document.getElementsByTagName('p'));
 
-  for (i = 0; i < paragraphs.length; i += 1) {
-    paragraphs[i].classList.add("article-text");
-  }
+  paragraphs.forEach(function(paragraph) {
+    paragraph.classList.add("article-text");
+  });
 </script>

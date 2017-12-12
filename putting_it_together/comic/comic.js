@@ -2,7 +2,7 @@ $(function() {
   var CONST = {
     first_delay: 250,
     delay_increment: 1500,
-    animation_speed: 250,
+    animation_time: 250,
   };
   Object.freeze(CONST);
 
@@ -17,7 +17,7 @@ $(function() {
       $blinds.eq(index).delay(delay).animate({
         top: "+=" + $blind.height(), 
         height: 0,
-      }, CONST['animation_speed']);
+      }, CONST['animation_time']);
       delay += CONST['delay_increment'];
     });
   }

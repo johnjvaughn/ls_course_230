@@ -1,18 +1,19 @@
-function walk(node, callback) {
-  callback(node);
-
-  for (var i = 0; i < node.childNodes.length; i++) {
-    walk(node.childNodes[i], callback);
-  }
-}
-
 var imgCount = 0;
 var pngCount = 0;
 
-walk(document, function(node) {
+function walk(node, callback) {
+  callback(node);
+  node.childNodes.forEach(function (childNode) {
+    walk(childNode, callback);
+  });
+}
+
+walk(document, function (node) {
   if (node.nodeName === 'IMG') {
     imgCount += 1;
-    if (node.getAttribute('src').slice(-4).toLowerCase() === '.png') pngCount += 1;
+    if (node.getAttribute('src').slice(-4).toLowerCase() === '.png') {
+      pngCount += 1;
+    }
   } else if (node.nodeName === 'A') {
     node.style.color = 'red';
   }

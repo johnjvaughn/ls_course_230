@@ -41,6 +41,13 @@ $(function() {
     "category": "Xbox One"
   }];
 
+  if ($('main li').length === 0) {
+    var $ul = $('main ul');
+    catalog.forEach(function (item) {
+      $ul.append("<li data-id='" + item.id + "'>" + item.title + " for " + item.category + "</li>");
+    });
+  }
+
   var $items = $('main li'),
       $checkboxes = $(':checkbox');
 
@@ -48,7 +55,7 @@ $(function() {
     var checked = $(this).is(':checked'),
         category = $(this).val();
 
-    catalog.forEach(function(item) {
+    catalog.forEach(function (item) {
       if (item.category === category) {
         $items.filter('[data-id=' + item.id + ']').toggle(checked);
       }

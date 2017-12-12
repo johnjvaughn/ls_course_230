@@ -5,7 +5,7 @@ $(function() {
   var photo_index = 0;
 
   function collectJQElements() {
-    $elements.photos = $('#slides');
+    $elements.photo_div = $('#slides');
     $elements.photo_info = $('section > header');
     $elements.comments = $('div#comments > ul');
     $elements.slideshow = $('#slideshow');
@@ -24,7 +24,7 @@ $(function() {
   }
 
   function addPhoto() {
-    $elements.photos.html(templates.photos({photos: photo_info_arr}));
+    $elements.photo_div.html(templates.photos({photos: photo_info_arr}));
   }
 
   function addPhotoInfo() {
@@ -36,15 +36,13 @@ $(function() {
   }
 
   var slideshow = {
-    displayCurrentSlide: function() {
-      var $current_fig = $('#slides figure:visible');
-      var $new_fig = $current_fig.parent().children('figure').eq(photo_index);
-      $current_fig.fadeOut();
-      $new_fig.fadeIn();
+    displayNewSlide: function() {
+      var $figures = $elements.photo_div.find('figure');
+      $figures.finish().filter(':visible').fadeOut();
+      $figures.eq(photo_index).fadeIn();
       $elements.photo_info.html(templates.photo_information(photo_info_arr[photo_index]));
       getComments(photo_info_arr[photo_index].id);
       $('input[name=photo_id]').val(photo_info_arr[photo_index].id);
-      console.log($('input[name=photo_id]'));
     },
     changeSlide: function(e) {
       e.preventDefault();
@@ -56,7 +54,7 @@ $(function() {
       } else {
         return;
       }
-      this.displayCurrentSlide();
+      this.displayNewSlide();
     },
     bindEvents: function() {
       $elements.slideshow.on('click', 'a', this.changeSlide.bind(this));
@@ -68,8 +66,8 @@ $(function() {
 
   var actions = {
     incrementAction: function(e) {
-      e.preventDefault();
       var $link = $(e.target);
+      e.preventDefault();
       $.ajax({
         url: $link.attr("href"),
         data: { photo_id: $link.data("id") },
@@ -92,8 +90,8 @@ $(function() {
 
   var comments_form = {
     submitForm: function(e) {
+      var $form = $(e.target);
       e.preventDefault();
-      $form = $(this);
       $.ajax({
         url: $form.attr("action"),
         data: $form.serialize(),
@@ -105,7 +103,7 @@ $(function() {
       }).fail(ajaxError);
     },
     bindEvents: function() {
-      $('#comments form').on('submit', this.submitForm);
+      $('#comments form').on('submit', this.submitForm.bind(this));
     },
     init: function() {
       this.bindEvents();
@@ -149,5 +147,4 @@ $(function() {
   collectTemplatesPartials();
   getPhotos();
   initializeEvents();
-  
 });

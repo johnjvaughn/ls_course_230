@@ -48,14 +48,13 @@ $(function() {
     $canvas.append(createElement(form_data));
   });
 
-  $('#controls a').click(function(e) {
+  $('#controls').on('click', 'a', function(e) {
     e.preventDefault();
     var $all_shapes = $('#animations div');
     
-    if ($(this).text() === 'Start') {
-      $all_shapes.stop().each(animateElement);
-    } else {
-      $all_shapes.stop();
+    $all_shapes.stop();
+    if ($(e.currentTarget).text() === 'Start') {
+      $all_shapes.each(animateElement);
     }
   });
 });

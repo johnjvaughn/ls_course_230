@@ -88,7 +88,7 @@
         this.keys().forEach(function(key) {
           if (callback(key) === answer) returnObj[key] = element[key];
         });
-
+        
         return returnObj;
       },
       pick: function(str) {
@@ -133,12 +133,12 @@
     if (arguments.length <= 1) return obj;
     var args = [].slice.call(arguments);
     var argLast = args.pop();
-    var argExtend = args[args.length - 1];
+    // var argExtend = args[args.length - 1];
 
-    for (var prop in argLast) {
-      argExtend[prop] = argLast[prop];
-    }
-
+    // Object.keys(argLast).forEach(function (prop) {
+      // argExtend[prop] = argLast[prop];
+    // });
+    Object.assign(args[args.length - 1], argLast);
     return _.extend.apply(this, args);
   }
 

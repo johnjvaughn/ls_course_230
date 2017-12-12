@@ -8,7 +8,6 @@ $(function() {
       var len = game_words.length;
       if (len === 0) return;
       var index = Math.floor(Math.random() * len);
-
       return game_words.splice(index, 1)[0].toUpperCase();
     };
   }();
@@ -23,7 +22,7 @@ $(function() {
     }
 
     this.CONST = {
-      wrongGuessLimit: 6,
+      wrong_guess_limit: 6,
       lose_message: "Sorry! You're out of guesses",
       win_message: "You win!",
       out_message: "Sorry, I've run out of words!",
@@ -55,7 +54,6 @@ $(function() {
     },
     showApples: function() {
       var spriteOffset = String(-322 * this.wrong_guesses) + "px";
-
       this.$jq.main.css({
         backgroundPosition: "215px " + spriteOffset + ", center 20px"
       });
@@ -81,14 +79,13 @@ $(function() {
         return this.letters_guessed.includes(ltr);
       }, this)) {
         this.game_result = 'win';
-      } else if (this.wrong_guesses >= this.CONST.wrongGuessLimit) {
+      } else if (this.wrong_guesses >= this.CONST.wrong_guess_limit) {
         this.game_result = 'lose';
       }
       return this.game_result;
     },
     showTypedLetter: function(letter) {
       var $letter_spans = this.$jq.word.children('span');
-
       this.answer.split('').forEach(function(ltr, index) {
         if (ltr === letter || letter === 'all') {
           $letter_spans.eq(index).text(ltr);
@@ -120,9 +117,10 @@ $(function() {
       this.$jq.guesses.append('<span>' + letter + '</span>');
     },
     processKeyPress: function(e) {
-      if (!isLetter(e.key)) return;
       if (this.game_result) return;
-      var letter = e.key.toUpperCase();
+      var char = e.key ? e.key : String.fromCharCode(e.which);
+      if (!isLetter(char)) return;
+      var letter = char.toUpperCase();
 
       if (this.letters_guessed.includes(letter)) return;
       this.updateGuesses(letter);
