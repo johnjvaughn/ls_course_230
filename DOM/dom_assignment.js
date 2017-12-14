@@ -34,3 +34,7 @@ p(mult, '5. changed text of multiplication element to result');
 //6.
 document.body.id = 'styled';
 p(document.body, '6. applied \'styled\' ID to body element');
+
+//test
+p(document.querySelector('h2'));
+p(document.querySelectorAll('h2'));
