@@ -26,17 +26,20 @@ h2 {
 #control {
   box-sizing: border-box;
   width: 90%;
-  height: 85px;
   margin: 0 auto;
-  padding: 20px;
-  vertical-align: middle;
+  padding: 20px 5px;
   border: 1px solid #e3e3e3;
   border-radius: 5px;
   background-color: #f5f5f5;
 }
 
+#control fieldset {
+  font-weight: bold;
+  margin: 5px 1%;
+}
+
 button, input.form_btn {
-  height: 45px;
+  height: 40px;
   border-radius: 5px;
   font-size: 18px;
   border: 1px solid #563d7c;
@@ -44,17 +47,24 @@ button, input.form_btn {
   background-color: inherit;
 }
 
-button:hover, input.form_btn:hover {
+button:hover,
+input.form_btn:hover {
   color: #ffffff;
   background-color: #563d7c;
 }
 
-button.add {
-  width: 135px;
-  margin-left: 20%;  
+button.add,
+button.addtag {
+  width: 115px;
+  margin-left: 3%;
+}
+button.addtag {
+  margin-left: 10px;
 }
 
-input[type=text], input[type=email] {
+input[type=text],
+input[type=email],
+input[type=tel] {
   box-sizing: border-box;
   height: 35px;
   border: 1px solid #cccccc;
@@ -62,11 +72,18 @@ input[type=text], input[type=email] {
   padding: 10px;
 }
 #search {
-  width: 25%;
-  margin-left: 20%;
+  box-sizing: border-box;
+  width: 20%; 
+  margin-left: 3%;
+}
+#control select {
+  position: relative;
+  top: 10px;
+  width: 18%;
+  margin-left: 7%;
 }
 
-#new_contact {
+form {
   display: none;
   width: 90%;
   margin: 10px auto;
@@ -78,7 +95,7 @@ h3 {
   font-weight: normal;
   text-align: center;
 }
-#new_contact fieldset {
+fieldset {
   font-weight: bold;
   margin: 8px 10%;
 }
@@ -94,22 +111,26 @@ fieldset dt {
   margin: 12px 0;
   padding-right: 20px;
   text-align: right;
+  vertical-align: middle;
 }
 fieldset dd {
   width: 70%;
   margin: 12px 0;
 }
-fieldset dd input {
+fieldset dd input,
+fieldset dd select {
   width: 100%;
+  margin: 0;
 }
+
 .form_btn {
-  width: 47%
+  width: 45%
 }
 #submit {
   margin-right: 5%;
 }
 #contact_list {
-  margin: 20px 6%;
+  margin: 20px 8%;
 }
 #contact_list h2 {
   margin-bottom: 20px;
@@ -133,4 +154,12 @@ fieldset dd input {
   padding: 0 10px;
   font-size: 14px;
   font-weight: normal;
+}
+
+footer {
+  border-top: 1px solid #eeeeee;
+  padding: 20px;
+  font-size: 10px;
+  text-align: center;
+  line-height: 1.5em;
 }

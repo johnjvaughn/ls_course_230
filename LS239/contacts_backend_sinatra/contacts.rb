@@ -51,7 +51,6 @@ class ContactsApp < Sinatra::Base
         ]
     end
     get '/contacts' do
-      response.headers['Access-Control-Allow-Origin'] = '*'
       json Contact.all
     end
 
@@ -69,7 +68,6 @@ class ContactsApp < Sinatra::Base
       status 404, 'When contact is not found. Body: "There is no contact with id = {id}"'
     end
     get '/contacts/:id' do
-      response.headers['Access-Control-Allow-Origin'] = '*'
       contact = Contact.find_by(id: params[:id])
       if contact
         json contact
@@ -103,7 +101,6 @@ class ContactsApp < Sinatra::Base
       new_contact = Contact.new(extract_contact_params)
       if new_contact.save
         status 201
-        response.headers['Access-Control-Allow-Origin'] = '*'
         json new_contact
       else
         halt 400, 'Contact cannot be saved'
@@ -126,7 +123,6 @@ class ContactsApp < Sinatra::Base
       contact = Contact.find_by(id: params[:id])
 
       if contact.update(extract_contact_params)
-        response.headers['Access-Control-Allow-Origin'] = '*'
         status 201
         json contact
       else
@@ -139,7 +135,6 @@ class ContactsApp < Sinatra::Base
       status 400, 'When contact with id = {id} does not exist. Body: "Contact does not exist"'
     end
     delete '/contacts/:id' do
-      response.headers['Access-Control-Allow-Origin'] = '*'
       contact = Contact.find_by(id: params[:id])
       if contact.nil?
         halt 400, 'Contact does not exist'

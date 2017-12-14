@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://use.fontawesome.com/3436a55e57.js"></script>
   <link rel="stylesheet" href="/stylesheets/style.css">
   <title>Document</title>
   <script type="text/javascript" src="/javascripts/jquery.js"></script>
@@ -19,11 +20,23 @@
           <dd>{{phone_number}}</dd>
           <dt>Email:</dt>
           <dd>{{email}}</dd>
+          <dt>Tags:</dt>
+          <dd>{{tags}}</dd>
         </dl>
         <button class="edit" id="edit{{id}}""><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
         <button class="delete" id="delete{{id}}"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
       </div>
     </li>
+    {{/each}}
+  </script>
+  <script id="tags" type="text/x-handlebars">
+    <option value="-1" disabled>Available Tags</option>
+    {{#each tags}}
+      {{#if selected}}
+        <option id="{{id}}" selected>{{name}}</option>
+      {{else}}
+        <option id="{{id}}">{{name}}</option>
+      {{/if}}
     {{/each}}
   </script>
   </head>
@@ -33,8 +46,15 @@
     </header>
     <main>
       <div id="control">
-        <button class="add">Add Contact</button>
-        <input type="text" id="search" placeholder="Search">
+        <fieldset>
+          <button class="add">Add Contact</button>
+          <input type="text" id="search" class="search" placeholder="Search">
+          <label>
+            <select id="tag_select" class="search" multiple size="3">
+            </select>
+          </label>
+          <button class="addtag">Add Tag</button>
+        </fieldset>
       </div>
       <form id="new_contact" action="#" method="post">
         <h3>Create Contact</h3>
@@ -45,10 +65,28 @@
             <dt><label for="email">Email address:</label></dt>
             <dd><input type="email" id="email" name="email"></dd>
             <dt><label for="phone_number">Telephone number:</label></dt>
-            <dd><input type="text" id="phone_number" name="phone_number"></dd>
+            <dd><input type="tel" id="phone_number" name="phone_number"></dd>
+            <dt><label for="tags">Tags:</label></dt>
+            <dd>
+              <select id="tags" name="tags" multiple></select>
+            </dd>
             <dt></dt>
             <dd>
               <input type="hidden" id="id">
+              <input type='submit' class="form_btn" id="submit" value="Submit">
+              <input type='reset' class="form_btn" id="cancel" value="Cancel">
+            </dd>
+          </dl>
+        </fieldset>
+      </form>
+      <form id="new_tag" action="#" method="post">
+        <h3>Create Tag</h3>
+        <fieldset>
+          <dl>
+            <dt><label for="name">Tag name:</label></dt>
+            <dd><input type="text" id="name" name="name" required></dd>
+            <dt></dt>
+            <dd>
               <input type='submit' class="form_btn" id="submit" value="Submit">
               <input type='reset' class="form_btn" id="cancel" value="Cancel">
             </dd>
@@ -60,5 +98,14 @@
         </ul>
       </section>
     </main>
+    <footer>
+      <p>
+        Developed by <a href="http://www.devsaran.com">Devsaran.com</a> and 
+        <a href="http://www.239listing.com">239 Listing Real Estate</a>.
+      </p>
+      <p>
+        Copied by John J. Vaughn for LS
+      </p>
+    </footer>
   </body>
 </html>
