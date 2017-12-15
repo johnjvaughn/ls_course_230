@@ -7,9 +7,9 @@
   <script src="https://use.fontawesome.com/3436a55e57.js"></script>
   <link rel="stylesheet" href="/stylesheets/style.css">
   <title>Document</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-  <script src="javascripts/script.js"></script>
+  <script src="/javascripts/script.js"></script>
   <script id="contacts" type="text/x-handlebars">
     {{#each contacts}}
     <li>
@@ -29,7 +29,7 @@
     </li>
     {{/each}}
   </script>
-  <script id="tags_available" type="text/x-handlebars">
+  <script id="tags" type="text/x-handlebars">
     <option value="-1" disabled>Available Tags</option>
     {{#each tags}}
       {{#if selected}}
@@ -49,10 +49,7 @@
         <fieldset>
           <button class="add">Add Contact</button>
           <input type="text" id="search" class="search" placeholder="Search">
-          <label>
-            <select id="tag_select" class="search" multiple size="3">
-            </select>
-          </label>
+          <select id="tag_search" class="search" multiple size="3"></select>
           <button class="addtag">Add Tag</button>
         </fieldset>
       </div>
@@ -66,15 +63,15 @@
             <dd><input type="email" id="email" name="email"></dd>
             <dt><label for="phone_number">Telephone number:</label></dt>
             <dd><input type="tel" id="phone_number" name="phone_number"></dd>
-            <dt><label for="tags">Tags:</label></dt>
+            <dt><label for="tag_select">Tags:</label></dt>
             <dd>
-              <select id="tags" name="tags" multiple></select>
+              <select id="tag_select" name="tags" multiple></select>
             </dd>
             <dt></dt>
             <dd>
               <input type="hidden" id="id">
-              <input type='submit' class="form_btn" id="contact_submit" value="Submit">
-              <input type='reset' class="form_btn cancel" value="Cancel">
+              <input type='submit' class="form_btn" id="submit_cancel" value="Submit">
+              <input type='reset' class="form_btn" id="cancel_contact" value="Cancel">
             </dd>
           </dl>
         </fieldset>
@@ -87,8 +84,8 @@
             <dd><input type="text" id="name" name="name" required></dd>
             <dt></dt>
             <dd>
-              <input type='submit' class="form_btn" id="tag_submit" value="Submit">
-              <input type='reset' class="form_btn cancel" value="Cancel">
+              <input type='submit' class="form_btn" id="submit_tag" value="Submit">
+              <input type='reset' class="form_btn" id="cancel_tag" value="Cancel">
             </dd>
           </dl>
         </fieldset>

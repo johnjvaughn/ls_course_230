@@ -37,11 +37,11 @@ $(function() {
   }
 
   function populateTags() {
-    $elements.tag_select.html(templates.tags_available({tags: tags_available}));
+    $elements.tag_select.html(templates.tags({tags: tags_available}));
   }
 
   function readTags() {
-    var tag_list = getItem('tags') || [];
+    var tag_list = getItem("tags") || [];
     contact_arr.forEach(function (contact) {
       if (contact.tags) {
         contact.tags.split(',').forEach(function (tag_name) {
@@ -63,13 +63,13 @@ $(function() {
     var search_str = $elements.search.val();
     var tags = $elements.tag_select.val();
     var contacts = contact_arr;
-    var contact_tags;
+    var c_tags;
 
     if (tags && tags.length > 0) {
       contacts = contacts.filter(function (contact) {
-        contact_tags = contact.tags.split(',');
+        c_tags = contact.tags.split(',');
         return (tags.some(function (tag) {
-          return contact_tags.includes(tag);
+          return c_tags.includes(tag);
         }));
       });
     }
@@ -83,12 +83,12 @@ $(function() {
     $elements.contact_list.html(templates.contacts({contacts: contacts}));
   }
 
-  function editContact(edit_contact, id) {
-    edit_contact['id'] = +id;
-    var index = contact_arr.findIndex(function(contact) {
-      return +contact['id'] === +id;
+  function editContact(contact, id) {
+    contact['id'] = +id;
+    var index = contact_arr.findIndex(function(contact_item) {
+      return +contact_item['id'] === +id;
     });
-    Object.assign(contact_arr[index], edit_contact);
+    Object.assign(contact_arr[index], contact);
   }
 
   function addContact(contact) {
@@ -139,7 +139,7 @@ $(function() {
     },
     bindEvents: function () {
       $elements.tag_form.one('submit', this.addTag.bind(this));
-      $elements.tag_form.find('input.cancel').one('click', this.cancel);
+      $elements.tag_form.find('input#cancel').one('click', this.cancel);
     },
     init: function () {
       this.bindEvents();
@@ -219,7 +219,7 @@ $(function() {
         tag.selected = (contact_tags.includes(tag.name));
         return tag;
       });
-      $elements.contact_form.find('#tags').html(templates.tags_available({tags: tags}));
+      $elements.contact_form.find('#tags').html(templates.tags({tags: tags}));
     },
     cancel: function (e) {
       e.preventDefault();
@@ -227,7 +227,7 @@ $(function() {
     },
     bindEvents: function () {
       $elements.contact_form.one('submit', this.processForm.bind(this));
-      $elements.contact_form.find('input.cancel').one('click', this.cancel);
+      $elements.contact_form.find('input#cancel').one('click', this.cancel);
     },
     init: function (id) {
       this.populateForm(id);
