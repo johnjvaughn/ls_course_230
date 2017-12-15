@@ -11,13 +11,16 @@
   </head>
 
   <body>
-    
+
     <input type="checkbox" id="menu-toggle">
     <nav class="todo_table">
-      <h1>All Todos</h1><div class="todo_num">18</div>
+      <div class="all_todos active_todo">
+        <h1>All Todos</h1>
+        <span class="todo_num"></span>
+      </div>
       <ul class="todos_nav todos_all">
         <script id="todo_nav" type="text/x-handlebars">
-          {{#each todos}}
+          {{#each nav}}
           <li>
             <a class="" href="#">
               <span class="todo_date">{{dueDate}}</span>
@@ -28,10 +31,11 @@
         </script>
       </ul>
 
-      <h1 class="completed">Completed</h1>
-      <ul class="todos_nav todos_completed">
-        
-      </ul>
+      <div class="completed_todos">
+        <h1 class="completed">Completed</h1>
+        <span class="todo_num"></span>
+      </div>
+      <ul class="todos_nav todos_completed"></ul>
     </nav>
 
     <main>
@@ -39,27 +43,44 @@
         <img src="/images/menu_icon.png" alt="Nav Menu Toggle">
       </label>
 
-      <h2>02/16</h2>
-      <span class="todo_num">8</span>
+      <h2>All Todos</h2>
+      <span class="todo_num"></span>
       <input type="checkbox" id="modal_switch">
       
       <div class="modal_background"></div>
-      <ul class="todo_list">
-        <li>
-          <a class="add_item" href="#"><span class="plus">&#65291;</span> Add new to do</a>
-        </li>
+      <table class="todo_list">
+        <thead>
+          <tr>
+            <th>
+              <a class="add_item" href="#">
+                <span class="plus">&#65291;</span> Add new to do
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
         <script id="todos" type="text/x-handlebars">
           {{#each todos}}
-          <li>
-            <label>
-              <input type="checkbox" name="todo{{id}}" id="todo{{id}}">
-              {{title}} - {{dueDate}}
-            </label>
-            <a class="delete_item" href="#"></a>
-          </li>
+          <tr>
+            <td>
+              {{#if completed}}
+              <label class="disabled">
+                <input type="checkbox" name="todo{{id}}" id="todo{{id}}" checked>
+              {{else}}
+              <label>
+                <input type="checkbox" name="todo{{id}}" id="todo{{id}}">
+              {{/if}}
+                <a class="todo_link" href="#">{{title}} - {{dueDate}}</a>
+              </label>
+            </td>
+            <td>
+              <a class="delete_item" href="#"></a>
+            </td>
+          </tr>
           {{/each}}
         </script>
-      </ul>
+        </tbody>
+      </table>
       
       <form class="modal" action="#" method="post">
         <dl>

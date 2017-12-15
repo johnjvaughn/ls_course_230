@@ -15,6 +15,14 @@ nav {
   color: #b2b5c3;
   background: #464f77;
 }
+nav > div {
+  margin-top: 55px;
+  padding-left: 105px;
+  cursor: pointer;
+}
+nav > ul {
+  cursor: pointer;
+}
 nav a {
   box-sizing: border-box;
   display: block;
@@ -23,7 +31,7 @@ nav a {
   text-decoration: none;
   color: inherit;
 }
-nav a.active_todo {
+nav .active_todo {
   color: #ffffff;
   background: #383f5f;
 }
@@ -55,7 +63,7 @@ nav .all {
 h1 {
   display: inline-block;
   box-sizing: border-box;
-  margin: 55px 0 5px 105px;
+  /*margin: 55px 0 5px 105px;*/
   padding: 5px 0 5px 35px;
   font-size: 18px;
   font-weight: 100;
@@ -63,8 +71,8 @@ h1 {
   background: transparent url("/images/list_icon.png") no-repeat;
 }
 h1 + .todo_num {
-  margin: 60px 28px 0 0;
-  padding: 1px 3px;
+  margin: 6px 30px 0 0;
+  /*padding: 1px 3px;*/
 }
 h1.completed {
   background: transparent url("/images/completed_icon.png") no-repeat;
@@ -99,43 +107,73 @@ h2 + .todo_num {
   color: #ffffff;
   background: #148fd5;
 }
-main ul {
+main table {
   display: inline-block;
   width: 100%; 
 }
-main li {
+main tr {
   display: block;
   box-sizing: border-box;
   border-top: 1px solid #ccc;
   width: 100%; height: 49px;
-  padding: 15px 10px;
+  margin: 0;
 }
-main li:first-of-type {
+
+main tr:first-of-type {
   border: none;
 }
-main li.all {
-  margin-bottom: 5px;
+main td {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 15px 10px;
 }
-li input[type="checkbox"] {
+main td:first-of-type {
+  width: calc(100% - 45px);
+}
+main td:first-of-type:hover {
+  background-color: #8dd7ef;
+}
+main td:last-of-type {
+  width: 40px;
+  height: 100%;
+}
+main td:last-of-type:hover {
+  background: #f280b9;
+}
+
+/*main tr.all {
+  margin-bottom: 5px;
+}*/
+main input[type="checkbox"] {
   margin-top: 2px;
   margin-right: 10px;
 }
-li label {
+main label {
+  /*position: relative;*/
   width: 90%;
 }
-li label.disabled {
+main label.disabled {
   color: #b3b3b3;
   text-decoration: line-through;
 }
-li > label:not(.disabled):hover {
+main label.disabled a {
+  color: inherit;
+}
+/*main label:not(.disabled):hover {
+  color: #148fd5;
+  cursor: pointer;
+}*/
+a.todo_link:hover {
   color: #148fd5;
   cursor: pointer;
 }
 a.delete_item {
+  position: absolute;
   float: right;
   width: 16px; height: 17px;
-  background: transparent url("/images/trash_can.png") no-repeat;
+  background: transparent center url("/images/trash.png") no-repeat;
 }
+
 a.add_item {
   color: #148fd5;
   text-decoration: none;
@@ -143,6 +181,14 @@ a.add_item {
 }
 a.add_item .plus {
   padding-right: 8px;
+}
+a.todo_link {
+  text-decoration: none;
+  color: #000000;
+}
+a.todo_link.completed {
+  text-decoration: line-through;
+  color: #888888;
 }
 
 /** Responsive Hamburger **/
@@ -169,7 +215,7 @@ a.add_item .plus {
   display: none;
   position: absolute;
   box-sizing: border-box;
-  top: calc(50% - 200px);
+  top: calc(50% - 100px);
   left: calc(50% - 240px);
   width: 570px; height: 400px;
   padding: 35px 40px 0 30px;
@@ -238,9 +284,6 @@ a.add_item .plus {
 }
 .modal_background {
   display: none;
-}
-#modal_switch:checked ~ ul .modal_background {
-  display: block;
   position: fixed;
   top: 0; right: 0; bottom: 0; left: 0;
   content: "";

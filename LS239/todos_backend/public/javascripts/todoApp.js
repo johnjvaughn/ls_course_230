@@ -84,7 +84,6 @@ var TodoList = function(todosData) {
 
   this.delete = function(todoId) {
     var todoIndex = this.indexOfId(todoId);
-
     return (todoIndex === undefined) ? undefined : todos.splice(todoIndex, 1)[0];
   };
 
@@ -98,7 +97,6 @@ var TodoList = function(todosData) {
         todoCopies.push(this.cloneTodo(todo.id));
       }
     }, this);
-    console.log(searchObj);
 
     return todoCopies;
   }
@@ -168,23 +166,44 @@ var todoManager = {
       }
       $template.remove();
     });
+    console.log(this.templates);
   },
 
   collectJQElements: function () {
-    this.$elements.todo_list = $('ul.todo_list');
-    this.$elements.todo_nav_all = $('ul.todos_all');
-    this.$elements.todo_nav_comp = $('ul.todos_completed');
-    this.$elements.todo_table = $('nav.todo_table');
+    this.$elements.todoList = $('table.todo_list');
+    this.$elements.todoNavAll = $('ul.todos_all');
+    this.$elements.todoNavComp = $('ul.todos_completed');
+    this.$elements.todoTable = $('nav.todo_table');
+    this.$elements.addItem = $('.add_item');
+    // this.$elements.modal = $('form.modal');
+    // this.$elements.modalBG = $('.modal_background');
+    this.$elements.mainHeading = $('main > h2');
+    this.$elements.mainHeadingNum = $('main > .todo_num');
   },
 
   populateTodoList: function () {
-    this.$elements.todo_list.children().not(':first-child').remove();
-    this.$elements.todo_list.append(this.templates.todos({ todos: this.listCurrent() }));
+    var listCurrent = this.listCurrent();
+    this.$elements.todoList.children().not(':first-child').remove();
+    this.$elements.todoList.append(this.templates.todos({ todos: listCurrent }));
+    var title = this.searchParam.dueDate || 
+        (this.searchParam.completed ? "Completed" : "All Todos");
+    this.$elements.mainHeading.html(title);
+    this.$elements.mainHeadingNum.html(String(listCurrent.length));
   },
 
   populateTodoNavs: function () {
-    this.$elements.todo_nav_all.append(this.templates.todo_nav({ todos: this.todoList.getTodoNavList(false) }));
-    this.$elements.todo_nav_comp.append(this.templates.todo_nav({ todos: this.todoList.getTodoNavList(true) }));
+    var allNavList = this.todoList.getTodoNavList(false);
+    var compNavList = this.todoList.getTodoNavList(true);
+    this.$elements.todoNavAll.append(this.templates.todo_nav({ nav: allNavList }));
+    this.$elements.todoNavComp.append(this.templates.todo_nav({ nav: compNavList }));
+    var allNum = allNavList.reduce(function (sum, nav) {
+      return sum + nav.number;
+    }, 0);
+    var compNum = compNavList.reduce(function (sum, nav) {
+      return sum + nav.number;
+    }, 0);
+    this.$elements.todoTable.find('div.all_todos span.todo_num').html(String(allNum));
+    this.$elements.todoTable.find('div.completed_todos span.todo_num').html(String(compNum));
   },
 
   listCurrent: function() {
@@ -204,17 +223,31 @@ var todoManager = {
   },
 
   selectTodos: function(e) {
-    // e.preventDefault();
-    this.searchParam.completed = $(e.target).parent().hasClass('todos_all');
-    this.searchParam.dueDate = $(e.target).find('.todo_date').text();
-    console.log(this.searchParam);
-    $(e.target).addClass('active_todo');
-    $(e.target).siblings().removeClass('active_todo');
+    e.preventDefault();
+    var $navItem = $(e.currentTarget);
+    this.searchParam = {};
+    this.$elements.todoTable.find('.active_todo').removeClass('active_todo');
+    if (e.currentTarget.tagName === 'LI') {
+      this.searchParam.dueDate = $navItem.find('.todo_date').text();
+      if ($navItem.parent().hasClass('todos_completed')) {
+        this.searchParam.completed = true;
+      }
+      $navItem.children('a').addClass('active_todo');
+    } else if (e.currentTarget.tagName === 'DIV') {
+      if ($navItem.hasClass('completed_todos')) {
+        this.searchParam.completed = true;
+      }
+      $navItem.addClass('active_todo');
+    }
     this.populateTodoList();
   },
 
+  startModal: function () {
+    modalManager.init.call(modalManager, this.todoList, id);
+  },
   bindEvents: function() {
-    this.$elements.todo_table.on('click', 'li', this.selectTodos.bind(this));
+    this.$elements.todoTable.on('click', 'li, div', this.selectTodos.bind(this));
+    this.$elements.addItem.on('click', this.startModal.bind(this));
   },
 
   init: function() {
@@ -223,6 +256,27 @@ var todoManager = {
     this.getTodos();
     this.bindEvents();
     return this;
+  },
+};
+
+var modalManager = {
+  collectJQElements: function () {
+    this.$elements.modal = $('form.modal');
+    this.$elements.modalBG = $('.modal_background');
+  },
+  hideModal: function () {
+    this.$elements.modalBG.fadeOut();
+    this.$elements.modal.fadeOut();
+  },
+  showModal: function (e) {
+    e.preventDefault();
+    this.$elements.modalBG.fadeIn();
+    this.$elements.modal.fadeIn();
+    this.$elements.modalBG.one('click', this.hideModal.bind(this));
+  },
+  init: function(todos, todo_id) {
+    this.collectJQElements();
+    this.showModal();
   },
 };
 
