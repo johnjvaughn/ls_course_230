@@ -91,8 +91,8 @@ $(function () {
       }, this);
 
       todoCopies.sort(function (a, b) {
-        aScore = a.completed ? 1 : 0;
-        bScore = b.completed ? 1 : 0;
+        var aScore = a.completed ? 1 : 0;
+        var bScore = b.completed ? 1 : 0;
         return aScore - bScore;
       });
 
