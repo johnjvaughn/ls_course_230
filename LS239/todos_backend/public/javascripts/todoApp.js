@@ -161,7 +161,7 @@ TodoList.prototype.complete = function(todoId) {
 */
 
 function ajaxError(xhr, status, errorThrown) {
-  alert( "AJAX: Sorry, there was a problem!");
+  alert( "AJAX Error: " + xhr.responseText);
   console.log("Error: " + errorThrown);
   console.log("Status: " + status);
   console.dir(xhr);
@@ -284,23 +284,16 @@ var todoManager = {
       id = id.replace(/[^\d]+/, "");
       todo = this.todoList.cloneTodo(+id);
     } else {
-      var today = new Date();
       todo = {
         id: '',
         title: '',
-        day: today.getDate(),
-        month: today.getMonth(),
-        year: today.getFullYear(),
         description: '',
       }
     }
     modalManager.init.call(modalManager, todo);
   },
 
-  toggleCompleted: function (e) {
-    e.preventDefault();
-    var id = $(e.currentTarget).find("input[type=checkbox]").attr("id");
-    id = id.replace(/[^\d]+/, "");
+  toggleTodo: function (id) {
     var request = {
       url: routes.toggle.action.replace('{id}', id),
       type: routes.toggle.type,
@@ -311,6 +304,13 @@ var todoManager = {
       this.populateTodoList();
       this.populateTodoNavs();
     }.bind(this)).fail(ajaxError);
+  },
+
+  toggleCompleted: function (e) {
+    e.preventDefault();
+    var id = $(e.currentTarget).find("input[type=checkbox]").attr("id");
+    id = id.replace(/[^\d]+/, "");
+    this.toggleTodo(id);
   },
 
   deleteTodo: function (e) {
@@ -343,6 +343,7 @@ var todoManager = {
     }.bind(this)).fail(ajaxError);
   },
 
+  
   newTodo: function (data) {
     var request = {
       url: routes.new.action,
@@ -377,17 +378,14 @@ var todoManager = {
 var modalManager = {
   $elements: {},
   populateModal: function(todo) {
-    this.$elements.modal.get(0).reset();
+    this.resetModal();
     this.$elements.title.val(todo.title);
-    if (todo.id) {
-      this.$elements.id.val(String(todo.id));
-    } else {
-      // this.$elements.id.val("");
-    }
+    if (todo.id) this.$elements.id.val(String(todo.id));
     if (todo.day) this.$elements.dueDay.val(todo.day);
     if (todo.month) this.$elements.dueMonth.val(todo.month);
     if (todo.year) this.$elements.dueYear.val(todo.year);
     this.$elements.description.html(todo.description);
+    this.$elements.completed.val(todo.completed ? "true" : "false"); 
   },
   collectJQElements: function () {
     this.$elements = {
@@ -399,11 +397,18 @@ var modalManager = {
       dueMonth: $('#due_month'),
       dueYear: $('#due_year'),
       description: $('#description'),
+      completed: $('#completed'),
+      markComplete: $('#mark_as_complete'),
     }
   },
   saveTodo: function(e) {
     e.preventDefault();
     var id = this.$elements.id.val();
+    var title = this.$elements.title.val();
+    if (title.length < 3) {
+      alert("Title must be at least three characters.");
+      return;
+    }
     var data = $(e.target).serialize();
     if (id) {
       todoManager.updateTodo.call(todoManager, data, id);
@@ -412,16 +417,36 @@ var modalManager = {
     }
     this.hideModal();
   },
+  markComplete: function (e) {
+    e.preventDefault();
+    var id = this.$elements.id.val();
+    if (!id) {
+      alert("Cannot mark as complete as item has not been created yet!");
+      return;
+    }
+    if (this.$elements.completed.val() !== "true") {
+      todoManager.toggleTodo.call(todoManager, id);
+    }
+    this.hideModal();
+  },
+  resetModal: function () {
+    this.$elements.modal.find("input").val("");
+    this.$elements.modal.find("select").get().selectedIndex = 0;
+    this.$elements.description.html("");
+  },
   hideModal: function () {
+    this.$elements.markComplete.off();
     this.$elements.modalBG.fadeOut();
-    this.$elements.modal.fadeOut();
+    this.$elements.modal.fadeOut().off();
+    this.resetModal();
   },
   showModal: function (todo) {
     this.populateModal(todo);
     this.$elements.modalBG.fadeIn();
     this.$elements.modalBG.one('click', this.hideModal.bind(this));
     this.$elements.modal.fadeIn();
-    this.$elements.modal.one('submit', this.saveTodo.bind(this));
+    this.$elements.modal.on('submit', this.saveTodo.bind(this));
+    this.$elements.markComplete.on('click', this.markComplete.bind(this));
   },
   init: function(todo) {
     this.collectJQElements();

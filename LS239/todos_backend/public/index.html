@@ -70,10 +70,11 @@
               <label>
                 <input type="checkbox" name="todo{{id}}" id="todo{{id}}">
               {{/if}}
+                <span class="check"></span>
                 <a class="todo_link" href="#">{{title}} - {{dueDate}}</a>
               </label>
-            </td>
-            <td>
+            </td><!--
+         --><td>
               <a class="delete_item" id="delete_todo{{id}}" href="#"></a>
             </td>
           </tr>
@@ -170,6 +171,7 @@
        --></dd><!--
      --></dl>
         <input type="hidden" name="id" id="todo_id">
+        <input type="hidden" name="completed" id="completed">
         <button id="save">Save</button>
         <button id="mark_as_complete">Mark as Complete</button>
       </form>
