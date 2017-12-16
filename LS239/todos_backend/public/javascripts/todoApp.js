@@ -2,13 +2,13 @@
   Todo
 */
 
-var Todo = function(todoData, id) {
+var Todo = function(todoData) {
   if (!(this instanceof Todo)) {
-    return new Todo(todoData, id);
+    return new Todo(todoData);
   }
 
   Object.assign(this, todoData);
-  if (!this.id) this.id = +id;
+  // if (!this.id) this.id = +id;
   // this.title = String(todoData.title);
   // this.day = todoData.day || null;
   // this.month = todoData.month || null;
@@ -40,7 +40,8 @@ var TodoList = function(todosData) {
   var todos = []; // keep private
 
   todosData.forEach(function (todoData, index) {
-    todos.push(new Todo(todoData, index + 1));
+    // todos.push(new Todo(todoData, index + 1));
+    todos.push(new Todo(todoData));
   });
 
   // this.lastId = todosData.length;
@@ -81,11 +82,13 @@ var TodoList = function(todosData) {
   this.cloneTodo = function (todoId) {
     var index = this.indexOfId(todoId);
     if (index === undefined) return;
-    return new Todo(todos[index], todoId);
+    // return new Todo(todos[index], todoId);
+    return new Todo(todos[index]);
   };
 
-  this.add = function (todo) {
-    todos.push(todo);
+  this.add = function (todoData) {
+    // todos.push(todo);
+    todos.push(new Todo(todoData));
   };
 
   // this.add = function(todoData) {
@@ -137,9 +140,9 @@ TodoList.prototype.update = function(todoData, todoId) {
   // var todo;
 
   // if (index === undefined) return;
-  // todo = this.delete(todoId);
-  var todo = this.cloneTodo(todoId);
-  this.delete(todoId);
+  var todo = this.delete(todoId);
+  // var todo = this.cloneTodo(todoId);
+  // this.delete(todoId);
   Object.assign(todo, todoData);
 
   // Object.keys(todoData).forEach(function (prop) {
@@ -200,6 +203,7 @@ var todoManager = {
 
   collectJQElements: function () {
     this.$elements.todoMainList = $('table.todo_list tbody');
+    this.$elements.todoTable = $('table.todo_list');
     this.$elements.todoNavAll = $('ul.todos_all');
     this.$elements.todoNavComp = $('ul.todos_completed');
     this.$elements.todoNav = $('nav.todo_table');
@@ -273,19 +277,21 @@ var todoManager = {
   startModal: function (e) {
     e.preventDefault();
     e.stopPropagation();
-    var id = null;
     var todo;
 
     if ($(e.currentTarget).hasClass("todo_link")) {
-      id = $(e.currentTarget).prev("input[type=checkbox]").attr("id");
+      var id = $(e.currentTarget).prev("input[type=checkbox]").attr("id");
       id = id.replace(/[^\d]+/, "");
       todo = this.todoList.cloneTodo(+id);
     } else {
       var today = new Date();
-      todo = { 
+      todo = {
+        id: '',
+        title: '',
         day: today.getDate(),
         month: today.getMonth(),
         year: today.getFullYear(),
+        description: '',
       }
     }
     modalManager.init.call(modalManager, todo);
@@ -336,13 +342,27 @@ var todoManager = {
       this.populateTodoNavs();
     }.bind(this)).fail(ajaxError);
   },
+
+  newTodo: function (data) {
+    var request = {
+      url: routes.new.action,
+      type: routes.new.type,
+      data: data,
+      dataType: "json",
+    }
+    $.ajax(request).done(function(json) {
+      this.todoList.add(json);
+      this.populateTodoList();
+      this.populateTodoNavs();
+    }.bind(this)).fail(ajaxError);
+  },
   
 
   bindEvents: function() {
     this.$elements.todoNav.on('click', 'li, div', this.selectTodos.bind(this));
-    this.$elements.todoMainList.on('click', '.todo_link, .add_item', this.startModal.bind(this));
-    this.$elements.todoMainList.on('click', 'td:first-of-type', this.toggleCompleted.bind(this));
-    this.$elements.todoMainList.on('click', 'td:last-of-type', this.deleteTodo.bind(this));
+    this.$elements.todoTable.on('click', '.todo_link, .add_item', this.startModal.bind(this));
+    this.$elements.todoTable.on('click', 'td:first-of-type', this.toggleCompleted.bind(this));
+    this.$elements.todoTable.on('click', 'td:last-of-type', this.deleteTodo.bind(this));
   },
 
   init: function() {
@@ -357,19 +377,16 @@ var todoManager = {
 var modalManager = {
   $elements: {},
   populateModal: function(todo) {
-      console.log(todo);
-    console.log(this.$elements.title);
+    this.$elements.modal.get(0).reset();
     this.$elements.title.val(todo.title);
-    this.$elements.id.val(String(todo.id));
-    if (todo.day) {
-      this.$elements.dueDay.val(todo.day);
+    if (todo.id) {
+      this.$elements.id.val(String(todo.id));
+    } else {
+      // this.$elements.id.val("");
     }
-    if (todo.month) {
-      this.$elements.dueMonth.val(todo.month);
-    }
-    if (todo.year) {
-      this.$elements.dueYear.val(todo.year);
-    }
+    if (todo.day) this.$elements.dueDay.val(todo.day);
+    if (todo.month) this.$elements.dueMonth.val(todo.month);
+    if (todo.year) this.$elements.dueYear.val(todo.year);
     this.$elements.description.html(todo.description);
   },
   collectJQElements: function () {
@@ -387,18 +404,17 @@ var modalManager = {
   saveTodo: function(e) {
     e.preventDefault();
     var id = this.$elements.id.val();
+    var data = $(e.target).serialize();
     if (id) {
-      todoManager.updateTodo.call(todoManager, $(e.target).serialize(), id);
+      todoManager.updateTodo.call(todoManager, data, id);
     } else {
-      // todoManager.newTodo(data);
+      todoManager.newTodo.call(todoManager, data);
     }
     this.hideModal();
   },
   hideModal: function () {
     this.$elements.modalBG.fadeOut();
-    this.$elements.modal.fadeOut(function() {
-      this.get(0).reset();
-    }.bind(this.$elements.modal));
+    this.$elements.modal.fadeOut();
   },
   showModal: function (todo) {
     this.populateModal(todo);

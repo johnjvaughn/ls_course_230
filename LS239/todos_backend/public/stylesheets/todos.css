@@ -63,7 +63,6 @@ nav .all {
 h1 {
   display: inline-block;
   box-sizing: border-box;
-  /*margin: 55px 0 5px 105px;*/
   padding: 5px 0 5px 35px;
   font-size: 18px;
   font-weight: 100;
@@ -72,7 +71,6 @@ h1 {
 }
 h1 + .todo_num {
   margin: 6px 30px 0 0;
-  /*padding: 1px 3px;*/
 }
 h1.completed {
   background: transparent url("/images/completed_icon.png") no-repeat;
@@ -143,15 +141,11 @@ main td:last-of-type:hover {
   background: #f280b9;
 }
 
-/*main tr.all {
-  margin-bottom: 5px;
-}*/
 main input[type="checkbox"] {
   margin-top: 2px;
   margin-right: 10px;
 }
 main label {
-  /*position: relative;*/
   width: 90%;
 }
 main label.disabled {
@@ -161,10 +155,6 @@ main label.disabled {
 main label.disabled a {
   color: inherit;
 }
-/*main label:not(.disabled):hover {
-  color: #148fd5;
-  cursor: pointer;
-}*/
 a.todo_link:hover {
   color: #148fd5;
   cursor: pointer;
@@ -222,7 +212,7 @@ a.todo_link.completed {
   width: 570px; height: 400px;
   padding: 35px 40px 0 30px;
   font-size: 16px;
-  color: #000000;
+  color: #757575;
   background: #ffffff;
   z-index: 2;
 }
@@ -251,6 +241,8 @@ a.todo_link.completed {
   width: 100%;
   padding: 8px 10px;
   resize: none;
+  color: #757575;
+  border-color: #757575;
   font: normal 16px Helvetica, Arial, sans-serif;
 }
 .modal textarea {
@@ -261,6 +253,7 @@ a.todo_link.completed {
   width: 29%;
   padding: 8px 10px;
   font-size: 16px;
+  color: #757575;
 }
 .modal .date_spacing {
   display: inline-block;
@@ -293,9 +286,9 @@ a.todo_link.completed {
   cursor: auto;
   z-index: 1;
 }
-#modal_switch:checked ~ .modal {
+/*#modal_switch:checked ~ .modal {
   display: block;
-}
+}*/
 
 /** RESPONSIVE styles **/
 
