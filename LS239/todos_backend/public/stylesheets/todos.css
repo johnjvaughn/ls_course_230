@@ -13,6 +13,7 @@ nav {
   position: absolute;
   top: 0px; bottom: 0px;
   width: 333px;
+  margin-bottom: -100%;
   padding: 15px 0 20px 0;
   letter-spacing: 1px;
   color: #b2b5c3;
