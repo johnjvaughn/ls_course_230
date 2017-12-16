@@ -2,6 +2,7 @@
 
 body {
   background: #ffffff;
+  height: 100%;
   font: normal 15px Helvetica, Arial, sans-serif;
 }
 
@@ -9,16 +10,21 @@ body {
 
 nav {
   display: inline-block;
+  position: absolute;
+  top: 0px; bottom: 0px;
   width: 333px;
-  padding: 15px 0 200px 0;
+  padding: 15px 0 20px 0;
   letter-spacing: 1px;
   color: #b2b5c3;
   background: #464f77;
 }
 nav > div {
   margin-top: 55px;
-  padding-left: 105px;
+  padding: 10px 0 5px 105px;
   cursor: pointer;
+}
+nav > div:last-of-type {
+  margin-top: 35px;
 }
 nav > ul {
   cursor: pointer;
@@ -35,13 +41,11 @@ nav .active_todo {
   color: #ffffff;
   background: #383f5f;
 }
-nav .all {
-  margin-bottom: 5px;
-}
 
 .todo_date {
   display: inline-block;
   width: 125px;
+  font-size: 16px;
 }
 .todos_completed .todo_date {
   text-decoration: line-through;
@@ -86,7 +90,7 @@ main {
   padding: 15px 80px 15px 20px;
   font-size: 16px;
   font-weight: 500;
-  color: #000000;
+  color: #0a0a0a;
   vertical-align: top;
 }
 
@@ -109,6 +113,7 @@ h2 + .todo_num {
 main table {
   display: table;
   width: 100%;
+  min-width: 300px;
 }
 main tr {
   display: block;
@@ -142,7 +147,6 @@ main td:last-of-type:hover {
   background: #fa9393;
 }
 
-
 main label {
   position: relative;
   width: 90%;
@@ -156,8 +160,6 @@ main label.disabled a {
 }
 main input[type="checkbox"] {
   display: none;
- /* margin-top: 2px;
-  margin-right: 10px;*/
 }
 main .check {
   background: transparent url(/images/checkbox.png) no-repeat;
@@ -169,9 +171,6 @@ main .check {
 main input[type="checkbox"]:checked + .check {
   background: transparent url(/images/checked.png) no-repeat;
 }
-/*.check + a.todo_link {
-  padding-left: 35px;
-}*/
 
 a.add_item {
   color: #148fd5;
@@ -184,7 +183,7 @@ a.add_item .plus {
 a.todo_link {
   padding-left: 35px;
   text-decoration: none;
-  color: #000000;
+  color: #0a0a0a;
 }
 a.todo_link:hover {
   color: #148fd5;
@@ -200,6 +199,7 @@ a.delete_item {
   width: 16px; height: 17px;
   background: transparent center url("/images/trash.png") no-repeat;
 }
+
 /** Responsive Hamburger **/
 
 .hamburger {
@@ -224,8 +224,8 @@ a.delete_item {
   display: none;
   position: absolute;
   box-sizing: border-box;
-  top: calc(50% - 100px);
-  left: calc(50% - 240px);
+  top: calc(50% - 50px);
+  left: calc(50% - 370px);
   width: 570px; height: 400px;
   padding: 35px 40px 0 30px;
   font-size: 16px;
@@ -259,7 +259,7 @@ a.delete_item {
   padding: 8px 10px;
   resize: none;
   color: #757575;
-  border-color: #757575;
+  border: 1px solid #757575;
   font: normal 16px Helvetica, Arial, sans-serif;
 }
 .modal textarea {
@@ -317,13 +317,10 @@ a.delete_item {
     visibility: visible;
   }
   .modal {
-    right: calc(50% - 285px);
+    left: calc(50% - 285px);
   }
   #menu-toggle:checked ~ main .modal {
     left: calc(50% - 380px);
     margin-left: -60px;
   }
 }
-
-
-
